@@ -6,12 +6,12 @@ import hm.videostore.statement.api.StatementItem;
 import hm.videostore.statement.api.StatementItemFactory;
 import java.time.LocalDate;
 
-public class RentedMovie implements Rental {
+class RentedMovie implements Rental {
     private StatementItemFactory statementItemFactory;
     private Movie movie;
     private LocalDate rentalDate;
 
-    public RentedMovie(StatementItemFactory statementItemFactory, Movie movie, LocalDate rentalDate) {
+    RentedMovie(StatementItemFactory statementItemFactory, Movie movie, LocalDate rentalDate) {
         this.statementItemFactory = statementItemFactory;
         this.movie = movie;
         this.rentalDate = rentalDate;

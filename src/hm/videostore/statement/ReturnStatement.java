@@ -6,12 +6,12 @@ import hm.videostore.statement.api.StatementItem;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ReturnStatement implements Statement {
+class ReturnStatement implements Statement {
     private Renter renter;
     private LocalDate date;
     private List<StatementItem> statementItems;
 
-    public ReturnStatement(Renter renter, LocalDate date, List<StatementItem> statementItems) {
+    ReturnStatement(Renter renter, LocalDate date, List<StatementItem> statementItems) {
         this.renter = renter;
         this.date = date;
         this.statementItems = statementItems;

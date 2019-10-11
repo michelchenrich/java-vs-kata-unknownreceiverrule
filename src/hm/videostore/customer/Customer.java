@@ -7,11 +7,11 @@ import hm.videostore.statement.api.Statement;
 import hm.videostore.statement.api.StatementFactory;
 import java.time.LocalDate;
 
-public class Customer implements Renter {
+class Customer implements Renter {
     private StatementFactory statementFactory;
     private Rentals rentals;
 
-    public Customer(StatementFactory statementFactory, Rentals rentals) {
+    Customer(StatementFactory statementFactory, Rentals rentals) {
         this.statementFactory = statementFactory;
         this.rentals = rentals;
     }

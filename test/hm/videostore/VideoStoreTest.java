@@ -1,7 +1,7 @@
 package hm.videostore;
 
+import hm.videostore.movie.MovieTestHelper;
 import hm.videostore.movie.api.Movie;
-import hm.videostore.movie.RegularMovie;
 import hm.videostore.renting.api.Renter;
 import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
@@ -17,10 +17,10 @@ public class VideoStoreTest {
 
     @Before
     public void setUp() {
-        var factory = new Factory();
-        RegularMovie.setDailyRate(REGULAR_RATE);
-        regularMovie = factory.makeRegularMovie();
-        customer = factory.makeRenter();
+        MovieTestHelper.setDailyRate(REGULAR_RATE);
+        var videoStore = VideoStore.compose();
+        regularMovie = videoStore.getMovieFactory().makeRegularMovie();
+        customer = videoStore.getRenterFactory().makeRenter();
     }
 
     @Test

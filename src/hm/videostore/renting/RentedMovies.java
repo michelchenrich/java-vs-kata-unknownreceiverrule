@@ -10,11 +10,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RentedMovies implements Rentals {
+class RentedMovies implements Rentals {
     private RentalFactory rentalFactory;
     private List<Rental> list;
 
-    public RentedMovies(RentalFactory rentalFactory, ListFactory listFactory) {
+    RentedMovies(RentalFactory rentalFactory, ListFactory listFactory) {
         this.rentalFactory = rentalFactory;
         this.list = listFactory.makeList();
     }
