@@ -1,5 +1,8 @@
 package hm.videostore;
 
+import hm.videostore.movie.api.Movie;
+import hm.videostore.movie.RegularMovie;
+import hm.videostore.renting.api.Renter;
 import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -10,28 +13,27 @@ public class VideoStoreTest {
     private static final LocalDate TODAY = LocalDate.now();
     private static final LocalDate TOMORROW = LocalDate.now().plusDays(1);
     private Movie regularMovie;
-    private Customer customer;
+    private Renter customer;
 
     @Before
     public void setUp() {
+        var factory = new Factory();
         RegularMovie.setDailyRate(REGULAR_RATE);
-        regularMovie = new RegularMovie();
-        customer = new Customer();
+        regularMovie = factory.makeRegularMovie();
+        customer = factory.makeRenter();
     }
 
     @Test
     public void commonStatementAttributes() {
-        LocalDate returnDate = TODAY;
+        var statement = customer.returnRentalsOn(TODAY);
 
-        Statement statement = customer.returnRentalsOn(returnDate);
-
-        assertEquals(customer, statement.getCustomer());
-        assertEquals(returnDate, statement.getDate());
+        assertEquals(customer, statement.getRenter());
+        assertEquals(TODAY, statement.getDate());
     }
 
     @Test
     public void noRentals_emptyStatement() {
-        Statement statement = customer.returnRentalsOn(TOMORROW);
+        var statement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(0, statement.getItems().size());
         assertEquals(0.0, statement.getTotal(), 0.001);
@@ -41,7 +43,7 @@ public class VideoStoreTest {
     public void oneRegularMovieReturnedInSameDay_paysJustOneDailyRate() {
         customer.rent(regularMovie, TODAY);
 
-        Statement statement = customer.returnRentalsOn(TODAY);
+        var statement = customer.returnRentalsOn(TODAY);
 
         assertEquals(1, statement.getItems().size());
         assertEquals(REGULAR_RATE, statement.getItems().get(0).getPrice(), 0.001);
@@ -52,7 +54,7 @@ public class VideoStoreTest {
     public void oneRegularMovieReturnedTheNextDay_paysTwoDailyRates() {
         customer.rent(regularMovie, TODAY);
 
-        Statement statement = customer.returnRentalsOn(TOMORROW);
+        var statement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(1, statement.getItems().size());
         assertEquals(REGULAR_RATE * 2, statement.getItems().get(0).getPrice(), 0.001);
@@ -64,7 +66,7 @@ public class VideoStoreTest {
         customer.rent(regularMovie, TODAY);
         customer.rent(regularMovie, TODAY);
 
-        Statement statement = customer.returnRentalsOn(TOMORROW);
+        var statement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(2, statement.getItems().size());
         assertEquals(REGULAR_RATE * 2, statement.getItems().get(0).getPrice(), 0.001);
@@ -78,7 +80,7 @@ public class VideoStoreTest {
         customer.rent(regularMovie, TODAY);
         customer.returnRentalsOn(TOMORROW);
 
-        Statement secondStatement = customer.returnRentalsOn(TOMORROW);
+        var secondStatement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(0, secondStatement.getItems().size());
         assertEquals(0.0, secondStatement.getTotal(), 0.001);

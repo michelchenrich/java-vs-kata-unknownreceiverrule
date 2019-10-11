@@ -1,6 +1,8 @@
-package hm.videostore;
+package hm.videostore.movie;
 
-public class RegularMovie extends Movie {
+import hm.videostore.movie.api.Movie;
+
+public class RegularMovie implements Movie {
     private static double dailyRate;
 
     public static void setDailyRate(double rate) {

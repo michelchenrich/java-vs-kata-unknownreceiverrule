@@ -1,12 +1,14 @@
-package hm.videostore;
+package hm.videostore.statement;
 
+import hm.videostore.renting.api.Rental;
+import hm.videostore.statement.api.StatementItem;
 import java.time.LocalDate;
 
-public class StatementItem {
+public class ReturnedItem implements StatementItem {
     private Rental rental;
     private LocalDate returnDate;
 
-    public StatementItem(Rental rental, LocalDate returnDate) {
+    public ReturnedItem(Rental rental, LocalDate returnDate) {
         this.rental = rental;
         this.returnDate = returnDate;
     }

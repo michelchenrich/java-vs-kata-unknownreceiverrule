@@ -1,15 +1,15 @@
-package hm.videostore;
+package hm.videostore.customer;
 
+import hm.videostore.movie.api.Movie;
+import hm.videostore.renting.api.Rentals;
+import hm.videostore.renting.api.Renter;
+import hm.videostore.statement.api.Statement;
+import hm.videostore.statement.api.StatementFactory;
 import java.time.LocalDate;
-import java.util.List;
 
-public class Customer {
+public class Customer implements Renter {
     private StatementFactory statementFactory;
     private Rentals rentals;
-
-    public Customer() {
-        this(Statement::new, new Rentals());
-    }
 
     public Customer(StatementFactory statementFactory, Rentals rentals) {
         this.statementFactory = statementFactory;
@@ -21,7 +21,7 @@ public class Customer {
     }
 
     public Statement returnRentalsOn(LocalDate returnDate) {
-        List<StatementItem> statementItems = rentals.returnAllOn(returnDate);
-        return statementFactory.make(this, returnDate, statementItems);
+        var statementItems = rentals.returnAllOn(returnDate);
+        return statementFactory.makeStatement(this, returnDate, statementItems);
     }
 }
