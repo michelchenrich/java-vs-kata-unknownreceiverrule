@@ -3,6 +3,7 @@ package hm.videostore.statement;
 import hm.videostore.renting.api.Renter;
 import hm.videostore.statement.api.Statement;
 import hm.videostore.statement.api.StatementItem;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -29,10 +30,10 @@ class ReturnStatement implements Statement {
         return statementItems;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return statementItems.stream()
                              .map(StatementItem::getPrice)
-                             .reduce(Double::sum)
-                             .orElse(0.0);
+                             .reduce(BigDecimal::add)
+                             .orElse(BigDecimal.ZERO);
     }
 }

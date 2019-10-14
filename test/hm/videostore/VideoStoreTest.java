@@ -1,15 +1,19 @@
 package hm.videostore;
 
-import hm.videostore.movie.MovieTestHelper;
+import static hm.videostore.BigDecimalAssert.assertEquals;
 import hm.videostore.movie.api.Movie;
 import hm.videostore.renting.api.Renter;
+import java.math.BigDecimal;
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
 public class VideoStoreTest {
-    private static final double REGULAR_RATE = 3.0;
+    private static final BigDecimal REGULAR_RATE = valueOf(3.0);
+    private static final BigDecimal DOUBLE_RATE = REGULAR_RATE.multiply(valueOf(2.0));
     private static final LocalDate TODAY = LocalDate.now();
     private static final LocalDate TOMORROW = LocalDate.now().plusDays(1);
     private Movie regularMovie;
@@ -17,8 +21,7 @@ public class VideoStoreTest {
 
     @Before
     public void setUp() {
-        MovieTestHelper.setDailyRate(REGULAR_RATE);
-        var videoStore = VideoStore.compose();
+        var videoStore = VideoStore.compose(REGULAR_RATE);
         regularMovie = videoStore.getMovieFactory().makeRegularMovie();
         customer = videoStore.getRenterFactory().makeRenter();
     }
@@ -36,7 +39,7 @@ public class VideoStoreTest {
         var statement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(0, statement.getItems().size());
-        assertEquals(0.0, statement.getTotal(), 0.001);
+        assertEquals(ZERO, statement.getTotal());
     }
 
     @Test
@@ -46,8 +49,8 @@ public class VideoStoreTest {
         var statement = customer.returnRentalsOn(TODAY);
 
         assertEquals(1, statement.getItems().size());
-        assertEquals(REGULAR_RATE, statement.getItems().get(0).getPrice(), 0.001);
-        assertEquals(REGULAR_RATE, statement.getTotal(), 0.001);
+        assertEquals(REGULAR_RATE, statement.getItems().get(0).getPrice());
+        assertEquals(REGULAR_RATE, statement.getTotal());
     }
 
     @Test
@@ -57,8 +60,8 @@ public class VideoStoreTest {
         var statement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(1, statement.getItems().size());
-        assertEquals(REGULAR_RATE * 2, statement.getItems().get(0).getPrice(), 0.001);
-        assertEquals(REGULAR_RATE * 2, statement.getTotal(), 0.001);
+        assertEquals(DOUBLE_RATE, statement.getItems().get(0).getPrice());
+        assertEquals(DOUBLE_RATE, statement.getTotal());
     }
 
     @Test
@@ -69,9 +72,9 @@ public class VideoStoreTest {
         var statement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(2, statement.getItems().size());
-        assertEquals(REGULAR_RATE * 2, statement.getItems().get(0).getPrice(), 0.001);
-        assertEquals(REGULAR_RATE * 2, statement.getItems().get(1).getPrice(), 0.001);
-        assertEquals(REGULAR_RATE * 2 * 2, statement.getTotal(), 0.001);
+        assertEquals(DOUBLE_RATE, statement.getItems().get(0).getPrice());
+        assertEquals(DOUBLE_RATE, statement.getItems().get(1).getPrice());
+        assertEquals(DOUBLE_RATE.add(DOUBLE_RATE), statement.getTotal());
     }
 
     @Test
@@ -83,6 +86,6 @@ public class VideoStoreTest {
         var secondStatement = customer.returnRentalsOn(TOMORROW);
 
         assertEquals(0, secondStatement.getItems().size());
-        assertEquals(0.0, secondStatement.getTotal(), 0.001);
+        assertEquals(ZERO, secondStatement.getTotal());
     }
 }

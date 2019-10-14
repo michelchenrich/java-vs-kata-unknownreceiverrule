@@ -1,6 +1,7 @@
 package hm.videostore.statement.api;
 
 import hm.videostore.renting.api.Renter;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface Statement {
 
     List<StatementItem> getItems();
 
-    double getTotal();
+    BigDecimal getTotal();
 }

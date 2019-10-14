@@ -4,6 +4,7 @@ import hm.videostore.movie.api.Movie;
 import hm.videostore.renting.api.Rental;
 import hm.videostore.statement.api.StatementItem;
 import hm.videostore.statement.api.StatementItemFactory;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 class RentedMovie implements Rental {
@@ -21,7 +22,7 @@ class RentedMovie implements Rental {
         return statementItemFactory.makeStatementItem(this, returnDate);
     }
 
-    public double getPriceReturnedOn(LocalDate returnDate) {
+    public BigDecimal getPriceReturnedOn(LocalDate returnDate) {
         long daysRented = returnDate.toEpochDay() - rentalDate.toEpochDay() + 1;
         return movie.getPriceWhenRentedForDays(daysRented);
     }

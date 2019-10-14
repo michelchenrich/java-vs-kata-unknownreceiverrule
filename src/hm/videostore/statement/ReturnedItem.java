@@ -2,6 +2,7 @@ package hm.videostore.statement;
 
 import hm.videostore.renting.api.Rental;
 import hm.videostore.statement.api.StatementItem;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 class ReturnedItem implements StatementItem {
@@ -13,7 +14,7 @@ class ReturnedItem implements StatementItem {
         this.returnDate = returnDate;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return rental.getPriceReturnedOn(returnDate);
     }
 }

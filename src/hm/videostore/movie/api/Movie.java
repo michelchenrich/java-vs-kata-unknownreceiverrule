@@ -1,5 +1,7 @@
 package hm.videostore.movie.api;
 
+import java.math.BigDecimal;
+
 public interface Movie {
-    double getPriceWhenRentedForDays(long days);
+    BigDecimal getPriceWhenRentedForDays(long days);
 }
